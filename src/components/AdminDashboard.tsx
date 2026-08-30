@@ -161,8 +161,8 @@ const PlayerForm = ({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.size > 2000000) {
-        alert("FILE TOO LARGE. PLEASE UPLOAD AN IMAGE UNDER 2MB.");
+      if (file.size > 10000000) {
+        alert("FILE TOO LARGE. PLEASE UPLOAD AN IMAGE UNDER 10MB.");
         return;
       }
       setSelectedFile(file);
@@ -173,8 +173,8 @@ const PlayerForm = ({
   const handleUltimateFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.size > 2000000) {
-        alert("FILE TOO LARGE. PLEASE UPLOAD AN IMAGE UNDER 2MB.");
+      if (file.size > 10000000) {
+        alert("FILE TOO LARGE. PLEASE UPLOAD AN IMAGE UNDER 10MB.");
         return;
       }
       setSelectedUltimateFile(file);
