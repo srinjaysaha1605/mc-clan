@@ -19,6 +19,7 @@ export default function App() {
   const [showCodex, setShowCodex] = useState(false);
   const [isRedMode, setIsRedMode] = useState(false);
   const [isChaosMode, setIsChaosMode] = useState(false);
+  const [isUltimate, setIsUltimate] = useState(false);
   const [showTerminal, setShowTerminal] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -249,7 +250,10 @@ export default function App() {
               {players.map((player) => (
                 <PlayerCard
                   key={player.id}
-                  player={player}
+                  player={{
+                    ...player,
+                    image: (isUltimate && player.ultimate_image) ? player.ultimate_image : player.image
+                  }}
                   onClick={() => setSelectedPlayer(player)}
                 />
               ))}
@@ -293,9 +297,11 @@ export default function App() {
                 const c = cmd.toUpperCase();
                 if (c === "OVERRIDE") setIsRedMode(true);
                 if (c === "CHAOS") setIsChaosMode(true);
+                if (c === "ULTIMATE") setIsUltimate(true);
                 if (c === "RESET") {
                   setIsRedMode(false);
                   setIsChaosMode(false);
+                  setIsUltimate(false);
                 }
               }}
             />
