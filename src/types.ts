@@ -8,4 +8,5 @@ export interface Player {
   primaryWeapon: string;
   status: string;
   image: string;
+  ultimate_image?: string;
 }
