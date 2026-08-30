@@ -149,10 +149,12 @@ const PlayerForm = ({
       primaryWeapon: "",
       status: "ACTIVE",
       image: "https://picsum.photos/seed/new/400/600",
+      ultimate_image: "",
     }
   );
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedUltimateFile, setSelectedUltimateFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>(formData.image || "");
   const [isSaving, setIsSaving] = useState(false);
 
@@ -168,10 +170,22 @@ const PlayerForm = ({
     }
   };
 
+  const handleUltimateFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 2000000) {
+        alert("FILE TOO LARGE. PLEASE UPLOAD AN IMAGE UNDER 2MB.");
+        return;
+      }
+      setSelectedUltimateFile(file);
+    }
+  };
+
   const handleSubmit = async () => {
     setIsSaving(true);
     try {
       let imageUrl = formData.image;
+      let ultimateImageUrl = formData.ultimate_image;
 
       if (selectedFile) {
         const uploadedUrl = await api.uploadImage(selectedFile);
@@ -184,7 +198,12 @@ const PlayerForm = ({
         }
       }
 
-      onSave({ ...formData, image: imageUrl });
+      if (selectedUltimateFile) {
+        const uploadedUrl = await api.uploadImage(selectedUltimateFile);
+        if (uploadedUrl) ultimateImageUrl = uploadedUrl;
+      }
+
+      onSave({ ...formData, image: imageUrl, ultimate_image: ultimateImageUrl });
     } catch (err) {
       console.error("Submit failed:", err);
       alert("AN ERROR OCCURRED WHILE SAVING.");
@@ -275,6 +294,27 @@ const PlayerForm = ({
                 </label>
               </div>
               <p className="text-[8px] text-white/30 uppercase">MAX SIZE: 2MB // PREFER SILHOUETTES</p>
+            </div>
+            <div className="space-y-1">
+              <label className="text-[10px] text-white/50 uppercase tracking-widest">ULTIMATE IMAGE SOURCE</label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={formData.ultimate_image || ""}
+                  onChange={(e) => setFormData({ ...formData, ultimate_image: e.target.value })}
+                  placeholder="ULTIMATE IMAGE URL OR UPLOAD"
+                  className="flex-1 bg-transparent border border-white/20 p-2 font-mono text-xs focus:border-white outline-none"
+                />
+                <label className="cursor-pointer bg-white/10 border border-white/20 p-2 hover:bg-white hover:text-black transition-colors flex items-center justify-center">
+                  <Upload size={16} />
+                  <input
+                    type="file"
+                    className="hidden"
+                    accept="image/*"
+                    onChange={handleUltimateFileChange}
+                  />
+                </label>
+              </div>
             </div>
             <div className="space-y-1">
               <label className="text-[10px] text-white/50 uppercase tracking-widest">QUOTE</label>
