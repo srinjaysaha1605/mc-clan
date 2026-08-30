@@ -40,7 +40,7 @@ export const TerminalCommand: React.FC<TerminalCommandProps> = ({ onClose, onCom
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onBlur={onClose}
-            placeholder="ENTER COMMAND (OVERRIDE, CHAOS, RESET)..."
+            placeholder="ENTER COMMAND (OVERRIDE, CHAOS, ULTIMATE, RESET)..."
             className="w-full bg-transparent border-none outline-none text-white font-mono text-sm uppercase tracking-widest placeholder:text-white/20"
           />
         </form>
