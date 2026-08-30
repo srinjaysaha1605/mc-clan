@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { Player } from "../types";
 import { cn } from "../lib/utils";
 
@@ -23,12 +23,19 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ player, onClick }) => {
     >
       {/* Silhouette Image */}
       <div className="absolute inset-0 flex items-center justify-center p-4">
-        <img
-          src={player.image}
-          alt={player.alias}
-          className="w-full h-full object-contain silhouette-img opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
-          referrerPolicy="no-referrer"
-        />
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={player.image}
+            src={player.image}
+            alt={player.alias}
+            initial={{ opacity: 0, scale: 0.95, filter: "brightness(2) blur(4px)" }}
+            animate={{ opacity: 1, scale: 1, filter: "brightness(1) blur(0px)" }}
+            exit={{ opacity: 0, scale: 1.05, filter: "brightness(2) blur(4px)" }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="w-full h-full object-contain silhouette-img opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
+            referrerPolicy="no-referrer"
+          />
+        </AnimatePresence>
       </div>
 
       {/* Overlay Gradient */}
