@@ -253,6 +253,7 @@ export default function App() {
       <header className="relative z-10 p-8 md:p-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
         <div>
           <motion.h1
+            onClick={handleTitleTap}
             initial={{ x: -20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             className="text-6xl md:text-8xl font-black tracking-tighter uppercase leading-none glitch-text cursor-pointer select-none"
@@ -261,11 +262,6 @@ export default function App() {
           </motion.h1>
 
           <motion.p
-            onClick={handleTitleTap}
-            onTouchEnd={(e) => {
-              e.preventDefault();
-              handleTitleTap();
-            }}
             initial={{ x: -20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
