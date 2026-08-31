@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
-import { Plus, Trash2, Edit2, LogOut, Save, X, Upload } from "lucide-react";
+import { Plus, Trash2, Edit2, LogOut, Save, X, Upload, ArrowUp, ArrowDown } from "lucide-react";
 import { Player } from "../types";
 import { api } from "../lib/api";
 
@@ -26,6 +26,26 @@ export const AdminDashboard = ({ players, onLogout, onViewSite }: AdminDashboard
     } catch (err) {
       console.error("Save failed:", err);
     }
+  };
+
+  const handleMove = async (index: number, direction: 'up' | 'down') => {
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= players.length) return;
+
+    const currentPlayer = players[index];
+    const targetPlayer = players[targetIndex];
+
+    const currentOrder = currentPlayer.display_order ?? index;
+    const targetOrder = targetPlayer.display_order ?? targetIndex;
+
+    const newCurrentOrder = targetOrder === currentOrder 
+      ? (direction === 'up' ? currentOrder - 1 : currentOrder + 1) 
+      : targetOrder;
+    const newTargetOrder = currentOrder;
+
+    // Swap position order in database
+    await api.updatePlayer(currentPlayer.id, { display_order: newCurrentOrder });
+    await api.updatePlayer(targetPlayer.id, { display_order: newTargetOrder });
   };
 
   const handleDelete = async (id: string) => {
@@ -98,6 +118,22 @@ export const AdminDashboard = ({ players, onLogout, onViewSite }: AdminDashboard
                 </p>
               </div>
               <div className="flex gap-2 mt-auto">
+                <button
+                  disabled={index === 0}
+                  onClick={() => handleMove(index, 'up')}
+                  className="p-2 border border-white/20 disabled:opacity-20 hover:bg-white hover:text-black transition-colors"
+                  title="Move Left / Up"
+                >
+                  <ArrowUp size={14} />
+                </button>
+                <button
+                  disabled={index === players.length - 1}
+                  onClick={() => handleMove(index, 'down')}
+                  className="p-2 border border-white/20 disabled:opacity-20 hover:bg-white hover:text-black transition-colors"
+                  title="Move Right / Down"
+                >
+                  <ArrowDown size={14} />
+                </button>
                 <button
                   onClick={() => setEditingPlayer(player)}
                   className="flex-1 border border-white/20 p-2 hover:bg-white hover:text-black transition-colors flex items-center justify-center gap-2 text-xs font-bold uppercase"
