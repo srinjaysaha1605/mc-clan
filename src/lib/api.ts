@@ -42,7 +42,7 @@ export const api = {
       const { data, error } = await supabase
         .from('players')
         .select('*')
-        .order('display_order', { ascending: true })
+        .order('display_order', { ascending: true, nullsFirst: false })
         .order('created_at', { ascending: false });
       
       if (error) throw error;
