@@ -1,20 +1,25 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# MACHUDA — Tactical Player Codex & Database
 
-# Run and deploy your AI Studio app
+A high-performance tactical player database and roster management system featuring an interactive terminal interface, combat profiles, secret system override commands, and real-time database integration via Supabase.
 
-This contains everything you need to run your app locally.
+---
 
-View your app in AI Studio: https://ai.studio/apps/4060e220-a42f-4cc5-932b-bf26db6b4241
+## ⚡ Features
 
-## Run Locally
+- **Tactical Roster Display**: Responsive grid layout showcasing combat personnel with detailed stats, quotes, and profile modal overlays.
+- **Ultimate Mode & Animations**: Dynamic card transformations with smooth Framer Motion flash/fade transitions.
+- **Terminal Command Interface**: Secret terminal interface triggered via hotkey supporting system override modes (`OVERRIDE`, `CHAOS`, `ULTIMATE`, `RESET`).
+- **Admin Management Portal**: Secure administrative dashboard to create, edit, delete, and upload custom images for squad members.
+- **Supabase Integration**: Real-time database synchronisation and bucket file storage for high-resolution operative artwork.
 
-**Prerequisites:**  Node.js
+---
 
+## 🛠️ Tech Stack
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+- **Frontend**: React 19, TypeScript, Vite
+- **Styling**: Tailwind CSS
+- **Animations**: Framer Motion (`motion/react`)
+- **Backend & Database**: Supabase (Database & Storage Buckets)
+- **Icons**: Lucide React
+
+---
