@@ -29,8 +29,6 @@ export default function App() {
   const [isAuthReady, setIsAuthReady] = useState(false);
   const [tapCount, setTapCount] = useState(0);
   const [lastTapTime, setLastTapTime] = useState(0);
-
-  // FIX: handleTitleTap is outside useEffect so JSX can access it
   const handleTitleTap = () => {
     const now = Date.now();
 
