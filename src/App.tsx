@@ -27,7 +27,9 @@ export default function App() {
   const [showLogin, setShowLogin] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isAuthReady, setIsAuthReady] = useState(false);
-
+  const [tapCount, setTapCount] = useState(0);
+  const [lastTapTime, setLastTapTime] = useState(0);
+  
   useEffect(() => {
     if (!isSupabaseConfigured) {
       setLoading(false);
@@ -72,6 +74,24 @@ export default function App() {
         e.preventDefault();
         setShowTerminal(true);
       }
+    };
+
+    // Secret Gesture: Triple-tap title within 1 second to open Terminal on mobile devices
+    const handleTitleTap = () => {
+      const now = Date.now();
+      // Reset counter if taps are more than 1 second apart
+      if (now - lastTapTime > 1000) {
+        setTapCount(1);
+      } else {
+        const newCount = tapCount + 1;
+        if (newCount >= 3) {
+          setShowTerminal(true);
+          setTapCount(0);
+        } else {
+          setTapCount(newCount);
+        }
+      }
+      setLastTapTime(now);
     };
 
     // Safety timeout for auth readiness
@@ -197,11 +217,12 @@ export default function App() {
             <motion.h1 
               initial={{ x: -20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
-              className="text-6xl md:text-8xl font-black tracking-tighter uppercase leading-none glitch-text"
+              className="text-6xl md:text-8xl font-black tracking-tighter uppercase leading-none glitch-text cursor-pointer select-none"
             >
               ᗰᗩᑕᕼᑌᗪᗩ<br />ᗰᑕ☣︎
             </motion.h1>
             <motion.p 
+              onClick={handleTitleTap}
               initial={{ x: -20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.2 }}
