@@ -31,20 +31,23 @@ export const AdminDashboard = ({ players, onLogout, onViewSite }: AdminDashboard
   const handleMove = async (index: number, direction: 'up' | 'down') => {
     const targetIndex = direction === 'up' ? index - 1 : index + 1;
     if (targetIndex < 0 || targetIndex >= players.length) return;
+
     const newPlayers = [...players];
     const temp = newPlayers[index];
     newPlayers[index] = newPlayers[targetIndex];
     newPlayers[targetIndex] = temp;
+
     const updatedPlayers = newPlayers.map((player, idx) => ({
       ...player,
       display_order: idx,
     }));
-    setPlayers(updatedPlayers);
+
     try {
       await Promise.all([
         api.updatePlayer(updatedPlayers[index].id, { display_order: index }),
         api.updatePlayer(updatedPlayers[targetIndex].id, { display_order: targetIndex }),
       ]);
+      onUpdate();
     } catch (err) {
       console.error("Failed to update order:", err);
     }
