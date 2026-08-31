@@ -31,23 +31,25 @@ export const AdminDashboard = ({ players, onLogout, onViewSite }: AdminDashboard
   const handleMove = async (index: number, direction: 'up' | 'down') => {
     const targetIndex = direction === 'up' ? index - 1 : index + 1;
     if (targetIndex < 0 || targetIndex >= players.length) return;
-
-    const currentPlayer = players[index];
-    const targetPlayer = players[targetIndex];
-
-    const currentOrder = currentPlayer.display_order ?? index;
-    const targetOrder = targetPlayer.display_order ?? targetIndex;
-
-    const newCurrentOrder = targetOrder === currentOrder 
-      ? (direction === 'up' ? currentOrder - 1 : currentOrder + 1) 
-      : targetOrder;
-    const newTargetOrder = currentOrder;
-
-    // Swap position order in database
-    await api.updatePlayer(currentPlayer.id, { display_order: newCurrentOrder });
-    await api.updatePlayer(targetPlayer.id, { display_order: newTargetOrder });
+    const newPlayers = [...players];
+    const temp = newPlayers[index];
+    newPlayers[index] = newPlayers[targetIndex];
+    newPlayers[targetIndex] = temp;
+    const updatedPlayers = newPlayers.map((player, idx) => ({
+      ...player,
+      display_order: idx,
+    }));
+    setPlayers(updatedPlayers);
+    try {
+      await Promise.all([
+        api.updatePlayer(updatedPlayers[index].id, { display_order: index }),
+        api.updatePlayer(updatedPlayers[targetIndex].id, { display_order: targetIndex }),
+      ]);
+    } catch (err) {
+      console.error("Failed to update order:", err);
+    }
   };
-
+  
   const handleDelete = async (id: string) => {
     if (window.confirm("ARE YOU SURE YOU WANT TO DELETE THIS PROFILE?")) {
       try {
